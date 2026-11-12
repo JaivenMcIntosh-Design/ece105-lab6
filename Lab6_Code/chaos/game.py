@@ -24,19 +24,27 @@ class ChaosGame:
         return (f"ChaosGame({len(self.vertices)} vertices, f={self.f:.3g}, "
                 f"rule={self.rule!r})")
 
-    def play(self, n):
-        """Play n moves; return the n points as an (n, 2) array.
-
+    def play (self, n):
+        """Play n moves return the n points as an (n, 2) array.
         Start at the center of the vertices (their mean), with current = 0.
-        Then, for each move i = 0, 1, ..., n - 1:
-          a. allowed = the rule's choices, for k vertices and current;
-          b. current = self.rng.choice(allowed), this move's vertex;
-          c. p = p + self.f * (v - p), where v is that vertex (Lecture 13);
-          d. row i of the points is p.
+        Then, for each move i = 0, 1, ..., n-1:
+            a. allowed = the rule's choices, for k vertices and current;
+            b. current = self.rng.choice(allowed), this move's vertex;
+            c. p = p + self.f * (v - p), where v is that vertex;
+            d. row i of the points is p.
         """
         points = np.zeros((n, 2))
-        # 4. the start: p, k, and current (replace pass)
-        pass
-        # 5. the n moves, a. to d. (replace pass)
-        pass
+        # 4. the start: p, k, and current
+        k = len(self.vertices)
+        p = self.vertices.mean(axis=0)
+        current = 0
+
+        # 5. then moves
+        for i in range(n):
+            allowed = self.rule.choices(k, current)
+            current = self.rng.choice(allowed)
+            v = self.vertices[current]
+            p = p + self.f * (v - p)
+            points[i] = p
+
         return points
